@@ -1,0 +1,34 @@
+# Cache do Python
+__pycache__/
+*.py[cod]
+
+# Ambientes virtuais
+.venv/
+venv/
+
+# Logs
+*.log
+
+# Arquivos de build (PyInstaller, cx_Freeze, etc)
+build/
+dist/
+*.spec
+
+# Executáveis
+*.exe
+
+# Banco de dados ou arquivos pesados
+*.db
+*.sqlite3
+*.zip
+*.tar
+*.gz
+*.rar
+*.7z
+
+# Configurações do VSCode
+.vscode/
+
+# Arquivos ocultos de sistema
+.DS_Store
+Thumbs.db
