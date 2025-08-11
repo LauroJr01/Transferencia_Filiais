@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from openpyxl.styles import Font, Alignment
 from openpyxl import load_workbook
+import re
 
 # RELATÓRIO
 def gerar_n_relatorio():
@@ -95,7 +96,6 @@ def gerar_n_zero_estoque():
     nartic['LOCALIZACAO'] = nartic['LOCALIZACAO'].astype(str)
     nartic['DESCRICAO'] = nartic['DESCRICAO'].astype(str)
 
-
     # Pega colunas em comum.
     colunas_comum = 'CODIGO'
 
@@ -149,7 +149,6 @@ def gerar_n_cod_errado():
     re_ordem = ['CODIGO', 'REFFOR', 'DESCRICAO', 'CODVOL', 'NARTIC', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO']
     nartic = nartic[re_ordem]
 
-
     # Exclui vazios.
     nartic = nartic.dropna(subset=['CODIGO', 'PALLET', 'NARTIC'])
     transf = transf.dropna(subset=['CODIGO', 'QUANTIDADE'])
@@ -167,7 +166,6 @@ def gerar_n_cod_errado():
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     nartic['LOCALIZACAO'] = nartic['LOCALIZACAO'].astype(str)
     nartic['DESCRICAO'] = nartic['DESCRICAO'].astype(str)
-
 
     # Pega colunas em comum.
     colunas_comum = 'CODIGO'
@@ -187,7 +185,8 @@ def gerar_n_finalizado():
     # Reorganiza as colunas.
     nartic['PEDIDO_QUANT'] = pd.NA
     nartic['PALLET_QUANT'] = pd.NA
-    re_ordem = ['CODIGO', 'REFFOR', 'DESCRICAO', 'CODVOL', 'NARTIC', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO']
+    nartic['QUANT_CX'] = pd.NA
+    re_ordem = ['CODIGO', 'REFFOR', 'DESCRICAO', 'CODVOL', 'NARTIC', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO', 'QUANT_CX']
     nartic = nartic[re_ordem]
 
     # Exclui vazios.
@@ -207,11 +206,10 @@ def gerar_n_finalizado():
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     nartic['LOCALIZACAO'] = nartic['LOCALIZACAO'].astype(str)
     nartic['DESCRICAO'] = nartic['DESCRICAO'].astype(str)
-
+    nartic['QUANT_CX'] = nartic['QUANT_CX'].astype(str)
 
     # Pega colunas em comum.
     colunas_comum = 'CODIGO'
-
     resultado_nartic = nartic[nartic[colunas_comum].isin(transf[colunas_comum])] #'isin' Faz o comparativo entre ambas colunas, excluindo as demais.
     resultado_transf = transf[transf[colunas_comum].isin(nartic[colunas_comum])]
     transf = resultado_transf
@@ -241,8 +239,16 @@ def gerar_n_finalizado():
 
     nartic = nartic.sort_values(by='DESCRICAO').reset_index(drop=True)
 
-    nartic.to_excel('Nartic Finalizado.xlsx', index=False)
+    # Cria uma coluna com número da linha excel.
+    nartic['linha_excel'] = nartic.index +2
 
+    # Aplica a fórmula na coluna QUANT_CX.
+    nartic['QUANT_CX'] = nartic.apply(lambda row: gerar_formula_excel(row['DESCRICAO'], row['linha_excel']), axis=1)
+
+    # Remove a coluna auxiliar.
+    nartic.drop(columns=['linha_excel'], inplace=True)
+
+    nartic.to_excel('Nartic Finalizado.xlsx', index=False)
 
     # Ler a planilha.
     wb = load_workbook('Nartic Finalizado.xlsx')
@@ -252,19 +258,17 @@ def gerar_n_finalizado():
         nm_col = col[0].value
 
         # Fonte e tamanho.
-        if nm_col in ['CODIGO', 'DESCRICAO', 'CODVOL', 'NARTIC', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO']:
+        if nm_col in ['CODIGO', 'DESCRICAO', 'CODVOL', 'NARTIC', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO', 'QUANT_CX']:
             for linha in col:
                 linha.font = Font(name='Arial', size=10)
         elif nm_col in ['REFFOR']:
             for linha in col:
                 linha.font = Font(name='Arial', size=8)
 
-
         # Centralização.
-        if nm_col in ['CODIGO', 'REFFOR', 'CODVOL', 'NARTIC', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO']:
+        if nm_col in ['CODIGO', 'REFFOR', 'CODVOL', 'NARTIC', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO', 'QUANT_CX']:
             for linha in col:
                 linha.alignment = Alignment(horizontal='center', vertical='center')
-
 
         # Negrito e cor.
         if nm_col in ['CODIGO', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO']:
@@ -274,6 +278,12 @@ def gerar_n_finalizado():
             for linha in col:
                 linha.font = Font(bold=True, color='FF0000')
 
-
     # Salvar.
     wb.save('Nartic Finalizado.xlsx')
+
+def gerar_formula_excel(texto, linha):
+    # Confere se tem "CX" para não criar fórmula inútil.
+    if re.search(r'cx', str(texto), re.IGNORECASE):
+        return f'=(G{linha}/VALUE(INDEX(MID(C{linha}, FIND("CX", C{linha}) +2, 10), 1))) & "cx"'
+    else:
+        return ''

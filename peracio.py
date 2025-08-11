@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from openpyxl.styles import Font, Alignment
 from openpyxl import load_workbook
+import re
 
 # RELATÓRIO
 def gerar_m_relatorio():
@@ -134,6 +135,7 @@ def gerar_m_zero_estoque():
 
 # CÓDIGO ERRADO
 def gerar_m_cod_errado():
+    # Lê as planilhas.
     moeda = pd.read_excel('Relatório.xlsx')
     transf = pd.read_excel('Transferência.xlsx')
 
@@ -183,7 +185,8 @@ def gerar_m_finalizado():
     # Reorganiza as colunas.
     moeda['PEDIDO_QUANT'] = pd.NA
     moeda['PALLET_QUANT'] = pd.NA
-    re_ordem = ['CODIGO', 'REFFOR', 'DESCRICAO', 'CODVOL', 'FILIAL_R', 'FILIAL', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO']
+    moeda['QUANT_CX'] = pd.NA
+    re_ordem = ['CODIGO', 'REFFOR', 'DESCRICAO', 'CODVOL', 'FILIAL_R', 'FILIAL', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO', 'QUANT_CX']
     moeda = moeda[re_ordem]
 
     # Exclui vazios.
@@ -203,6 +206,7 @@ def gerar_m_finalizado():
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     moeda['LOCALIZACAO'] = moeda['LOCALIZACAO'].astype(str)
     moeda['DESCRICAO'] = moeda['DESCRICAO'].astype(str)
+    moeda['QUANT_CX'] = moeda['QUANT_CX'].astype(str)
 
     # Pega colunas em comum.
     colunas_comum = 'CODIGO'
@@ -230,15 +234,21 @@ def gerar_m_finalizado():
 
     #moeda['PALLET_QUANT'] = moeda['PALLET_QUANT'].round().astype(float) #round() pega a metade e joga para cima ou para baixo 'ceil()' joga tudo para cima.
 
-
-
-    # Exclui os zerados
+    # Exclui os zerados.
     moeda = moeda[moeda['FILIAL'] != 0]
 
     moeda = moeda.sort_values(by='DESCRICAO').reset_index(drop=True)
 
-    moeda.to_excel('Moeda Finalizado.xlsx', index=False)
+    # Cria uma coluna com número da linha excel.
+    moeda['linha_excel'] = moeda.index +2
 
+    # Aplica a fórmula na coluna QUANT_CX.
+    moeda['QUANT_CX'] = moeda.apply(lambda row: gerar_formula_excel(row['DESCRICAO'], row['linha_excel']), axis=1)
+                    
+    # Remove a coluna auxiliar.
+    moeda.drop(columns=['linha_excel'], inplace=True)
+
+    moeda.to_excel('Moeda Finalizado.xlsx', index=False)
 
     # Ler a planilha.
     wb = load_workbook('Moeda Finalizado.xlsx')
@@ -248,19 +258,17 @@ def gerar_m_finalizado():
         nm_col = col[0].value
 
         # Fonte e tamanho.
-        if nm_col in ['CODIGO', 'DESCRICAO', 'CODVOL', 'FILIAL_R', 'FILIAL', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO']:
+        if nm_col in ['CODIGO', 'DESCRICAO', 'CODVOL', 'FILIAL_R', 'FILIAL', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO', 'QUANT_CX']:
             for linha in col:
                 linha.font = Font(name='Arial', size=10)
         elif nm_col in ['REFFOR']:
             for linha in col:
                 linha.font = Font(name='Arial', size=8)
 
-
         # Centralização.
-        if nm_col in ['CODIGO', 'REFFOR', 'CODVOL', 'FILIAL_R', 'FILIAL', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO']:
+        if nm_col in ['CODIGO', 'REFFOR', 'CODVOL', 'FILIAL_R', 'FILIAL', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO', 'QUANT_CX']:
             for linha in col:
                 linha.alignment = Alignment(horizontal='center', vertical='center')
-
 
         # Negrito e cor.
         if nm_col in ['CODIGO', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO']:
@@ -270,7 +278,12 @@ def gerar_m_finalizado():
             for linha in col:
                 linha.font = Font(bold=True, color='FF0000')
 
-
     # Salvar.
     wb.save('Moeda Finalizado.xlsx')
 
+def gerar_formula_excel(texto, linha):
+    # Confere se tem "CX" para não criar fórmula inútil.
+    if re.search(r'cx', str(texto), re.IGNORECASE):
+        return f'=(H{linha}/VALUE(INDEX(MID(C{linha}, FIND("CX", C{linha}) +2, 10), 1))) & "cx"'
+    else:
+        return ''
