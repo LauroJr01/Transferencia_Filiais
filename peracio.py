@@ -284,6 +284,6 @@ def gerar_m_finalizado():
 def gerar_formula_excel(texto, linha):
     # Confere se tem "CX" para não criar fórmula inútil.
     if re.search(r'cx', str(texto), re.IGNORECASE):
-        return f'=(H{linha}/VALUE(INDEX(MID(C{linha}, FIND("CX", C{linha}) +2, 10), 1))) & "cx"'
+        return f'=(H{linha}/VALUE(MID(C{linha}, FIND("CX", C{linha}) +2, 10))) & "cx"'
     else:
         return ''
