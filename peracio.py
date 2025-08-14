@@ -285,5 +285,7 @@ def gerar_formula_excel(texto, linha):
     # Confere se tem "CX" para não criar fórmula inútil.
     if re.search(r'cx', str(texto), re.IGNORECASE):
         return f'=(H{linha}/VALUE(MID(C{linha}, FIND("CX", C{linha}) +2, 10))) & "cx"'
+    elif re.search(r'fd', str(texto), re.IGNORECASE):
+        return f'=(H{linha}/VALUE(MID(C{linha}, FIND("FD", C{linha}) +2, 10))) & "fd"'
     else:
         return ''
