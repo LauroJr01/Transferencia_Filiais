@@ -4,8 +4,12 @@ import numpy as np
 from openpyxl.styles import Font, Alignment
 from openpyxl import load_workbook
 import re
+from arquivo import captura_erros
+
+pd.set_option('future.no_silent_downcasting', True)
 
 # RELATÓRIO
+@captura_erros
 def gerar_n_relatorio():
     # Lê as planilhas.
     nartic = pd.read_excel('Relatório.xlsx')
@@ -24,6 +28,7 @@ def gerar_n_relatorio():
     nartic.to_excel('Nartic Relatório.xlsx', index=False)
 
 # PEDIDO
+@captura_erros
 def gerar_n_pedido():
     # Lê as planilhas.
     nartic = pd.read_excel('Relatório.xlsx')
@@ -53,6 +58,9 @@ def gerar_n_pedido():
     nartic['PEDIDO_QUANT'] = nartic['PEDIDO_QUANT'].astype(int)
     nartic['PALLET_QUANT'] = nartic['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     nartic['LOCALIZACAO'] = nartic['LOCALIZACAO'].astype(str)
     nartic['DESCRICAO'] = nartic['DESCRICAO'].astype(str)
@@ -63,6 +71,7 @@ def gerar_n_pedido():
     resultado_moeda.to_excel('Nartic Pedido.xlsx', index=False) #Cria uma nova planilha, 'index=False' exlcui o ID criado pelo pandas.
 
 # ZERO ESTOQUE
+@captura_erros
 def gerar_n_zero_estoque():
     # Lê as planilhas.
     nartic = pd.read_excel('Relatório.xlsx')
@@ -92,6 +101,9 @@ def gerar_n_zero_estoque():
     nartic['PEDIDO_QUANT'] = nartic['PEDIDO_QUANT'].astype(int)
     nartic['PALLET_QUANT'] = nartic['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     nartic['LOCALIZACAO'] = nartic['LOCALIZACAO'].astype(str)
     nartic['DESCRICAO'] = nartic['DESCRICAO'].astype(str)
@@ -134,6 +146,7 @@ def gerar_n_zero_estoque():
     nartic_zero_estoque.to_excel('Nartic Zero Estoque.xlsx', index=False)
 
 # CÓDIGO ERRADO
+@captura_erros
 def gerar_n_cod_errado():
     # Lê as planilhas.
     nartic = pd.read_excel('Relatório.xlsx')
@@ -163,6 +176,9 @@ def gerar_n_cod_errado():
     nartic['PEDIDO_QUANT'] = nartic['PEDIDO_QUANT'].astype(int)
     nartic['PALLET_QUANT'] = nartic['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     nartic['LOCALIZACAO'] = nartic['LOCALIZACAO'].astype(str)
     nartic['DESCRICAO'] = nartic['DESCRICAO'].astype(str)
@@ -173,6 +189,7 @@ def gerar_n_cod_errado():
     resultado_transf_zero.to_excel('Relatório Código Errado Nartic.xlsx', index=False)
 
 # FINALIZADO
+@captura_erros
 def gerar_n_finalizado():
     # Lê as planilhas.
     nartic = pd.read_excel('Relatório.xlsx')
@@ -203,6 +220,9 @@ def gerar_n_finalizado():
     nartic['PEDIDO_QUANT'] = nartic['PEDIDO_QUANT'].astype(int)
     nartic['PALLET_QUANT'] = nartic['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     nartic['LOCALIZACAO'] = nartic['LOCALIZACAO'].astype(str)
     nartic['DESCRICAO'] = nartic['DESCRICAO'].astype(str)
@@ -260,10 +280,10 @@ def gerar_n_finalizado():
         # Fonte e tamanho.
         if nm_col in ['CODIGO', 'DESCRICAO', 'CODVOL', 'NARTIC', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO', 'QUANT_CX']:
             for linha in col:
-                linha.font = Font(name='Arial', size=10)
+                linha.font = Font(name='Segoe UI Black', size=10)
         elif nm_col in ['REFFOR']:
             for linha in col:
-                linha.font = Font(name='Arial', size=8)
+                linha.font = Font(name='Segoe UI Black', size=8)
 
         # Centralização.
         if nm_col in ['CODIGO', 'REFFOR', 'CODVOL', 'NARTIC', 'PALLET', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO', 'QUANT_CX']:
@@ -273,14 +293,15 @@ def gerar_n_finalizado():
         # Negrito e cor.
         if nm_col in ['CODIGO', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO']:
             for linha in col:
-                linha.font = Font(bold=True)
+                linha.font = Font(name='Segoe UI Black', bold=True, size=10)
         elif nm_col in ['NARTIC', 'PALLET']:
             for linha in col:
-                linha.font = Font(bold=True, color='FF0000')
+                linha.font = Font(name='Segoe UI Black', bold=True, color='FF0000', size=10)
 
     # Salvar.
     wb.save('Nartic Finalizado.xlsx')
 
+@captura_erros
 def gerar_formula_excel(texto, linha):
     # Confere se tem "CX" para não criar fórmula inútil.
     if re.search(r'cx', str(texto), re.IGNORECASE):

@@ -1,8 +1,8 @@
 import customtkinter as ctk
-from tkinter import messagebox
 from arquivo import arquivos
 from peracio import gerar_m_relatorio, gerar_m_pedido, gerar_m_cod_errado, gerar_m_zero_estoque, gerar_m_finalizado
 from nartic import gerar_n_relatorio, gerar_n_pedido, gerar_n_cod_errado, gerar_n_zero_estoque, gerar_n_finalizado
+from arquivo import resource_path
 
 def iniciar_programa():
     ctk.set_appearance_mode("dark")
@@ -11,6 +11,7 @@ def iniciar_programa():
     app = ctk.CTk()
     app.geometry("550x510")
     app.title("Transferência de Mercadorias")
+    app.iconbitmap(resource_path('icone.ico'))
 
     # Frame de cabeçalho (título visual)
     header = ctk.CTkFrame(app)

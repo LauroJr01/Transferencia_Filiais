@@ -4,8 +4,12 @@ import numpy as np
 from openpyxl.styles import Font, Alignment
 from openpyxl import load_workbook
 import re
+from arquivo import captura_erros
+
+pd.set_option('future.no_silent_downcasting', True)
 
 # RELATÓRIO
+@captura_erros
 def gerar_m_relatorio():
     # Lê as planilhas.
     moeda = pd.read_excel('Relatório.xlsx')
@@ -24,6 +28,7 @@ def gerar_m_relatorio():
     moeda.to_excel('Moeda Relatório.xlsx', index=False)
 
 # PEDIDO
+@captura_erros
 def gerar_m_pedido():
     # Lê as planilhas.
     moeda = pd.read_excel('Relatório.xlsx')
@@ -53,6 +58,9 @@ def gerar_m_pedido():
     moeda['PEDIDO_QUANT'] = moeda['PEDIDO_QUANT'].astype(int)
     moeda['PALLET_QUANT'] = moeda['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     moeda['LOCALIZACAO'] = moeda['LOCALIZACAO'].astype(str)
     moeda['DESCRICAO'] = moeda['DESCRICAO'].astype(str)
@@ -63,6 +71,7 @@ def gerar_m_pedido():
     m_pedido.to_excel('Moeda Pedido.xlsx', index=False) #Cria uma nova planilha, 'index=False' exlcui o ID criado pelo pandas.
 
 # ZERO ESTOQUE
+@captura_erros
 def gerar_m_zero_estoque():
     # Lê as planilhas.
     moeda = pd.read_excel('Relatório.xlsx')
@@ -92,6 +101,9 @@ def gerar_m_zero_estoque():
     moeda['PEDIDO_QUANT'] = moeda['PEDIDO_QUANT'].astype(int)
     moeda['PALLET_QUANT'] = moeda['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     moeda['LOCALIZACAO'] = moeda['LOCALIZACAO'].astype(str)
     moeda['DESCRICAO'] = moeda['DESCRICAO'].astype(str)
@@ -134,6 +146,7 @@ def gerar_m_zero_estoque():
     moeda_zero_estoque.to_excel('Moeda Zero Estoque.xlsx', index=False)
 
 # CÓDIGO ERRADO
+@captura_erros
 def gerar_m_cod_errado():
     # Lê as planilhas.
     moeda = pd.read_excel('Relatório.xlsx')
@@ -163,6 +176,9 @@ def gerar_m_cod_errado():
     moeda['PEDIDO_QUANT'] = moeda['PEDIDO_QUANT'].astype(int)
     moeda['PALLET_QUANT'] = moeda['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     moeda['LOCALIZACAO'] = moeda['LOCALIZACAO'].astype(str)
     moeda['DESCRICAO'] = moeda['DESCRICAO'].astype(str)
@@ -173,6 +189,7 @@ def gerar_m_cod_errado():
     relatorio_cod_errado.to_excel('Relatório Código Errado Moeda.xlsx', index=False) #Cria uma nova planilha, 'index=False' exlcui o ID criado pelo pandas.
 
 # FINALIZADO
+@captura_erros
 def gerar_m_finalizado():
     # Lê as planilhas.
     moeda = pd.read_excel('Relatório.xlsx')
@@ -203,6 +220,9 @@ def gerar_m_finalizado():
     moeda['PEDIDO_QUANT'] = moeda['PEDIDO_QUANT'].astype(int)
     moeda['PALLET_QUANT'] = moeda['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     moeda['LOCALIZACAO'] = moeda['LOCALIZACAO'].astype(str)
     moeda['DESCRICAO'] = moeda['DESCRICAO'].astype(str)
@@ -273,14 +293,15 @@ def gerar_m_finalizado():
         # Negrito e cor.
         if nm_col in ['CODIGO', 'PEDIDO_QUANT', 'PALLET_QUANT', 'LOCALIZACAO']:
             for linha in col:
-                linha.font = Font(bold=True)
+                linha.font = Font(name='Arial', bold=True, size=10)
         elif nm_col in ['FILIAL', 'PALLET']:
             for linha in col:
-                linha.font = Font(bold=True, color='FF0000')
+                linha.font = Font(name='Arial', bold=True, color='FF0000', size=10)
 
     # Salvar.
     wb.save('Moeda Finalizado.xlsx')
 
+@captura_erros
 def gerar_formula_excel(texto, linha):
     # Confere se tem "CX" para não criar fórmula inútil.
     if re.search(r'cx', str(texto), re.IGNORECASE):
