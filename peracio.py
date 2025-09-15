@@ -58,9 +58,9 @@ def gerar_m_pedido():
     moeda['PEDIDO_QUANT'] = moeda['PEDIDO_QUANT'].astype(int)
     moeda['PALLET_QUANT'] = moeda['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     moeda['LOCALIZACAO'] = moeda['LOCALIZACAO'].astype(str)
     moeda['DESCRICAO'] = moeda['DESCRICAO'].astype(str)
@@ -101,9 +101,9 @@ def gerar_m_zero_estoque():
     moeda['PEDIDO_QUANT'] = moeda['PEDIDO_QUANT'].astype(int)
     moeda['PALLET_QUANT'] = moeda['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     moeda['LOCALIZACAO'] = moeda['LOCALIZACAO'].astype(str)
     moeda['DESCRICAO'] = moeda['DESCRICAO'].astype(str)
@@ -176,9 +176,9 @@ def gerar_m_cod_errado():
     moeda['PEDIDO_QUANT'] = moeda['PEDIDO_QUANT'].astype(int)
     moeda['PALLET_QUANT'] = moeda['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     moeda['LOCALIZACAO'] = moeda['LOCALIZACAO'].astype(str)
     moeda['DESCRICAO'] = moeda['DESCRICAO'].astype(str)
@@ -220,9 +220,9 @@ def gerar_m_finalizado():
     moeda['PEDIDO_QUANT'] = moeda['PEDIDO_QUANT'].astype(int)
     moeda['PALLET_QUANT'] = moeda['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     moeda['LOCALIZACAO'] = moeda['LOCALIZACAO'].astype(str)
     moeda['DESCRICAO'] = moeda['DESCRICAO'].astype(str)

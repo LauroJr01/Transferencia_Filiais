@@ -58,9 +58,9 @@ def gerar_n_pedido():
     nartic['PEDIDO_QUANT'] = nartic['PEDIDO_QUANT'].astype(int)
     nartic['PALLET_QUANT'] = nartic['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     nartic['LOCALIZACAO'] = nartic['LOCALIZACAO'].astype(str)
     nartic['DESCRICAO'] = nartic['DESCRICAO'].astype(str)
@@ -101,9 +101,9 @@ def gerar_n_zero_estoque():
     nartic['PEDIDO_QUANT'] = nartic['PEDIDO_QUANT'].astype(int)
     nartic['PALLET_QUANT'] = nartic['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     nartic['LOCALIZACAO'] = nartic['LOCALIZACAO'].astype(str)
     nartic['DESCRICAO'] = nartic['DESCRICAO'].astype(str)
@@ -176,9 +176,9 @@ def gerar_n_cod_errado():
     nartic['PEDIDO_QUANT'] = nartic['PEDIDO_QUANT'].astype(int)
     nartic['PALLET_QUANT'] = nartic['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     nartic['LOCALIZACAO'] = nartic['LOCALIZACAO'].astype(str)
     nartic['DESCRICAO'] = nartic['DESCRICAO'].astype(str)
@@ -220,9 +220,9 @@ def gerar_n_finalizado():
     nartic['PEDIDO_QUANT'] = nartic['PEDIDO_QUANT'].astype(int)
     nartic['PALLET_QUANT'] = nartic['PALLET_QUANT'].astype(int)
     transf['CODIGO'] = transf['CODIGO'].astype(int)
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
-    transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.strip().str.replace('\xa0', '', regex=True) # remove espaços vazios
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(".", "", regex=False)  # remove pontos
+    # transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(str).str.replace(",", "", regex=False)  # remove vírgulas
     transf['QUANTIDADE'] = transf['QUANTIDADE'].astype(int)
     nartic['LOCALIZACAO'] = nartic['LOCALIZACAO'].astype(str)
     nartic['DESCRICAO'] = nartic['DESCRICAO'].astype(str)
